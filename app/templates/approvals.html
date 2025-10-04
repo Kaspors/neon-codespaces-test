@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}Approvals{% endblock %}
+{% block content %}
+
+<div class="card">
+  <h2>Submitted entries</h2>
+  <table>
+    <thead>
+      <tr><th>Person</th><th>Date</th><th>Project</th><th>Hours</th><th>Notes</th><th class="right">Actions</th></tr>
+    </thead>
+    <tbody>
+      {% for r in rows %}
+        <tr>
+          <td>{{ r.person_name }}</td>
+          <td>{{ r.work_date }}</td>
+          <td>{{ r.project_code or '' }} {{ r.project_name or '—' }}</td>
+          <td>{{ '%.2f'|format(r.hours) }}</td>
+          <td>{{ r.notes or '' }}</td>
+          <td class="right">
+            <form class="inline" action="/approvals/approve/{{ r.id }}" method="post"><button class="primary">Approve</button></form>
+            <form class="inline" action="/approvals/reject/{{ r.id }}" method="post"><button class="danger">Reject</button></form>
+          </td>
+        </tr>
+      {% else %}
+        <tr><td colspan="6" class="muted">Nothing submitted.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+{% endblock %}

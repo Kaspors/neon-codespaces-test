@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}Projects{% endblock %}
+{% block content %}
+
+<div class="card">
+  <h2>Projects</h2>
+  <form action="/projects/add" method="post" class="grid3">
+    <div><label>Code</label><input name="code" placeholder="e.g., INT"></div>
+    <div><label>Name</label><input name="name" required placeholder="Internal"></div>
+    <div class="right"><button class="primary">Save</button></div>
+  </form>
+</div>
+
+<div class="card">
+  <table>
+    <thead><tr><th>ID</th><th>Code</th><th>Name</th><th>Status</th><th class="right">Actions</th></tr></thead>
+    <tbody>
+    {% for r in rows %}
+      <tr>
+        <td>{{ r.id }}</td>
+        <td>{{ r.code or '—' }}</td>
+        <td>{{ r.name }}</td>
+        <td>{{ 'Active' if r.is_active else 'Inactive' }}</td>
+        <td class="right">
+          <form class="inline" action="/projects/toggle/{{ r.id }}" method="post"><button>Toggle</button></form>
+          <form class="inline" action="/projects/delete/{{ r.id }}" method="post" onsubmit="return confirm('Delete project?')">
+            <button class="danger">Delete</button>
+          </form>
+        </td>
+      </tr>
+    {% else %}
+      <tr><td colspan="5" class="muted">No projects yet.</td></tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+{% endblock %}

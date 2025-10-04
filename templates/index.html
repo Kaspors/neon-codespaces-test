@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="card">
+  <h3>Add / Update person</h3>
+  <form action="{{ url_for('add') }}" method="post" style="display:grid; grid-template-columns: 1fr 1fr auto; gap: .75rem; align-items: end;">
+    <div>
+      <label>Name</label>
+      <input type="text" name="name" placeholder="Ada Lovelace" required />
+    </div>
+    <div>
+      <label>Email (unique)</label>
+      <input type="email" name="email" placeholder="ada@example.com" />
+    </div>
+    <div>
+      <button class="primary" type="submit">Save</button>
+    </div>
+  </form>
+  <p class="muted">If email exists, the name is updated (upsert).</p>
+</div>
+
+<div class="card">
+  <div class="row header">
+    <div>Name</div>
+    <div>Email</div>
+    <div>Created</div>
+    <div class="actions">Actions</div>
+  </div>
+
+  {% for r in rows %}
+    <div class="row">
+      <div>{{ r.name }}</div>
+      <div>{{ r.email or '—' }}</div>
+      <div class="muted">{{ r.created_at }}</div>
+      <div class="actions">
+        <form class="inline" action="{{ url_for('delete', person_id=r.id) }}" method="post" onsubmit="return confirm('Delete this row?')">
+          <button class="danger" type="submit">Delete</button>
+        </form>
+      </div>
+    </div>
+  {% else %}
+    <p class="muted">No rows yet. Add someone above.</p>
+  {% endfor %}
+</div>
+
+{% endblock %}

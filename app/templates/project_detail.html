@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Project: {{ project.name }} ({{ project.code }})</h2>
+
+<div class="grid">
+  <section>
+    <h3>Tasks</h3>
+    <form method="post" action="/projects/{{project.id}}/tasks/create">
+      <input name="name" placeholder="Task name" required>
+      <label><input type="checkbox" name="billable_default" value="true" checked> Billable</label>
+      <button type="submit">Add Task</button>
+    </form>
+    <ul>
+      {% for t in tasks %}
+      <li>#{{t.id}} — {{ t.name }} ({{ "billable" if t.billable_default else "non-billable" }})</li>
+      {% endfor %}
+    </ul>
+  </section>
+
+  <section>
+    <h3>Assignments</h3>
+    <form method="post" action="/projects/{{project.id}}/assign">
+      <select name="user_id">
+        {% for u in users %}
+          <option value="{{u.id}}">{{u.name}}</option>
+        {% endfor %}
+      </select>
+      <button type="submit">Assign</button>
+    </form>
+    <ul>
+      {% for a in assigned %}
+        <li>{{ a.name }}</li>
+      {% endfor %}
+    </ul>
+  </section>
+</div>
+{% endblock %}

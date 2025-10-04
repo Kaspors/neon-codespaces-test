@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{% block title %}App{% endblock %}</title>
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+  <div class="shell">
+    <header class="nav">
+      <div class="links">
+        <a href="/my-week" class="{% if request.url.path.startswith('/my-week') %}active{% endif %}">My Week</a>
+        <a href="/people" class="{% if request.url.path.startswith('/people') %}active{% endif %}">People</a>
+        <a href="/projects" class="{% if request.url.path.startswith('/projects') %}active{% endif %}">Projects</a>
+        <a href="/approvals" class="{% if request.url.path.startswith('/approvals') %}active{% endif %}">Approvals</a>
+      </div>
+      <div class="muted">{{ request.url.path }}</div>
+    </header>
+
+    {% block content %}{% endblock %}
+  </div>
+</body>
+</html>
